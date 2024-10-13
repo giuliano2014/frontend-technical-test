@@ -96,6 +96,48 @@ export async function getMemes(token: string, page: number): Promise<GetMemesRes
   }).then(res => checkStatus(res).json())
 }
 
+export type CreateMemeResponse = {
+  id: string;
+  authorId: string;
+  pictureUrl: string;
+  description: string;
+  commentsCount: string;
+  texts: {
+    content: string;
+    x: number;
+    y: number;
+  }[];
+  createdAt: string;
+}
+
+/**
+ * Create a new meme
+ * @param token 
+ * @param pictureFile 
+ * @param description 
+ * @param texts 
+ * @returns 
+ */
+export async function createMeme(
+  token: string, 
+  pictureFile: File,
+  description: string,
+  texts: { content: string; x: number; y: number; }[]
+): Promise<CreateMemeResponse> {
+  const formData = new FormData();
+  formData.append('picture', pictureFile);
+  formData.append('description', description);
+  formData.append('texts', JSON.stringify(texts));
+
+  return await fetch(`${BASE_URL}/memes`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    },
+    body: formData,
+  }).then(res => checkStatus(res).json())
+}
+
 export type GetMemeCommentsResponse = {
   total: number;
   pageSize: number;

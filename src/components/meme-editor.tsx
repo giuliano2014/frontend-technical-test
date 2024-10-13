@@ -4,6 +4,7 @@ import { AspectRatio, Box, Button, Flex, Icon, Text } from "@chakra-ui/react";
 import { Image, Pencil } from "@phosphor-icons/react";
 
 export type MemeEditorProps = {
+  name: string;
   onDrop: (file: File) => void;
   memePicture?: MemePictureProps;
 };
@@ -55,6 +56,7 @@ function renderMemePicture(memePicture: MemePictureProps, open: () => void) {
 }
 
 export const MemeEditor: React.FC<MemeEditorProps> = ({
+  name,
   onDrop,
   memePicture,
 }) => {
@@ -63,10 +65,11 @@ export const MemeEditor: React.FC<MemeEditorProps> = ({
       if (files.length === 0) {
         return;
       }
+      console.log('sdvdsvds', files[0])
       onDrop(files[0]);
     },
     noClick: memePicture !== undefined,
-    accept: { "image/png": [".png"], "image/jpg": [".jpg"] },
+    // accept: { "image/png": [".png"], "image/jpg": [".jpg"] },
   });
 
   return (
@@ -80,7 +83,7 @@ export const MemeEditor: React.FC<MemeEditorProps> = ({
         borderRadius={9}
         px={1}
       >
-        <input {...getInputProps()} />
+        <input name={name} {...getInputProps()} />
         {memePicture ? renderMemePicture(memePicture, open) : renderNoPicture()}
       </Box>
     </AspectRatio>
